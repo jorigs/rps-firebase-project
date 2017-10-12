@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  //firebase config and initialization//
+  //firebase config and initialization
   var config = {
     apiKey: "AIzaSyBQrb-pSYOZb9QN_c3NiE5FZJ6j200cHfA",
     authDomain: "rock-paper-scissors-75714.firebaseapp.com",
@@ -9,14 +9,14 @@ $(document).ready(function () {
     messagingSenderId: "3007296511"
   };
   firebase.initializeApp(config);
-  //firebase references//
+  //firebase references 
   var database = firebase.database();
   var data = database.ref('data');
   var turn = data.child('turn');
   var playersRef = data.child('players');
   var player1Ref = playersRef.child('1');
   var player2Ref = playersRef.child('2');
-  //global variables//
+  //global variables
   var player1Exists;
   var player2Exists;
   var changeDOM;
@@ -36,13 +36,13 @@ $(document).ready(function () {
     turn: 0,
   };
 
-  //sets the turn to 0 if a player disconnects//
+  //resets the turn to 0 if one player leaves (or refreshes the page)
   data.onDisconnect().update({ turn: 0 });
-  //resets the chat if a player disconnects//
+  //empties the chat board if one player leaves or refreshes the page
   data.child('chat').onDisconnect().set({});
-  //keeps global variables in sync with firebase on changes to firebase//
+  //keeps all global variables in line with firebase
   data.on('value', function (snapshot) {
-    //sets player1Exists and player2Exists to true or false depending on if they exist in the database//
+    //registers whether or not a player exists within the database
     player1Exists = snapshot.child('players').child('1').exists();
     player2Exists = snapshot.child('players').child('2').exists();
   });
@@ -313,10 +313,10 @@ $(document).ready(function () {
   //reset function to change the DOM and change the turn to 1 so player 1 is prompted to choose again//
   function reset() {
     data.update({ turn: 1 });
-    //changes the DOM for BOTH players//
+    //changes the domain for BOTH players//
     $('#choice1').text('');
     $('#choice2').text('');
-    //changes the DOM for player 2, player 1's DOM is changed by the user1Choose function which is called since the turn is set back to 1//
+    //changes the domain for player 2, player 1's DOM is changed by the user1Choose function which is called since the turn is set back to 1//
     if (gameObject.userId == '2') {
       $('#choice1').text('');
       $('#choice2').text('');
